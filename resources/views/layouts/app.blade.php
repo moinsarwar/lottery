@@ -28,7 +28,11 @@
 <body>
 
 {{-- ✅ header include --}}
-@include('layouts.header')
+@if(Route::is('login'))
+
+@else
+    @include('layouts.header')
+@endif
 
 <div class="container py-4">
     @yield('content')

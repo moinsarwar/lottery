@@ -1,10 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-custom shadow">
     <div class="container">
         <a class="navbar-brand" href="/lottery">🎲 Lottery App</a>
-        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item">
+                <a href="{{route('lottery')}}" class="text-white">
+                    Lottery Number
+                </a>
+            </li>
+        </ul>
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto align-items-lg-center">
                 @auth
@@ -32,7 +39,7 @@
 
                     </li>
                     <li class="nav-item">
-{{--                        <a href="{{ route('register') }}" class="btn btn-sm btn-light text-primary fw-semibold">Register</a>--}}
+                        {{--                        <a href="{{ route('register') }}" class="btn btn-sm btn-light text-primary fw-semibold">Register</a>--}}
                     </li>
                 @endauth
             </ul>

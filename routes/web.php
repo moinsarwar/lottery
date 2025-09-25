@@ -14,7 +14,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/lottery', [LotteryController::class, 'index'])->name('lottery.index');
-    Route::post('/lottery', [LotteryController::class, 'store'])->name('lottery.store');
+    Route::get('/lottery', [LotteryController::class, 'index'])->name('lottery');
+    Route::post('/lottery', [LotteryController::class, 'store'])->name('saveLottery');
+    Route::get('/lottery/delete/{id}', [LotteryController::class, 'delete'])->name('deleteLottery');
 });
 

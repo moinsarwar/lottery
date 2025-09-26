@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e6e6e6;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(90deg, #0f3460 0%, #1a1a2e 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e94560;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #e6e6e6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #e94560;
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #e94560;
+            transition: width 0.3s;
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer-section h2 {
+            margin-bottom: 20px;
+            color: #e94560;
+        }
+
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .countdown-unit {
+            background: rgba(233, 69, 96, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .countdown-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #e94560;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .results-section h2 {
+            margin-bottom: 20px;
+            color: #e94560;
+        }
+
+        .draw-date {
+            color: #7b9acc;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .numbers-display {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .number-ball {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e94560 0%, #c22540 100%);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .no-results {
+            font-size: 1.2rem;
+            color: #7b9acc;
+            margin: 30px 0;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(90deg, #0f3460 0%, #1a1a2e 100%);
+            color: #e6e6e6;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 60px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            #countdown {
+                gap: 10px;
+            }
+
+            .countdown-unit {
+                min-width: 60px;
+                padding: 10px;
+            }
+
+            .countdown-value {
+                font-size: 1.8rem;
+            }
+
+            .number-ball {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .countdown-unit {
+                min-width: 50px;
+            }
+
+            .countdown-value {
+                font-size: 1.5rem;
+            }
+
+            .number-ball {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">Paradise Lottery</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Results</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <section class="hero">
+        <h1>Today's Lottery Results</h1>
+        <p>Check the latest winning numbers and see if you've hit the jackpot!</p>
+    </section>
+
+    <section class="timer-section">
+        <h2>Next Draw In:</h2>
+        <div id="countdown">
+            <div class="countdown-unit">
+                <div class="countdown-value" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-value" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-value" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <h2>Latest Winning Numbers</h2>
+
+        @foreach($latestLottries as $latestLottery)
+            <div class="draw-date">
+                Draw Date: {{ \Carbon\Carbon::parse($latestLottery->created_at)->format('M d, Y') }}
+            </div>
+
+            <div class="numbers-display">
+                @foreach(str_split($latestLottery->number) as $digit)
+                    <div class="number-ball">{{ $digit }}</div>
+                @endforeach
+            </div>
+        @endforeach
+
+        <p>If you have the winning numbers, claim your prize within 3 days.</p>
+    </section>
+    <section class="results-section">
+        <h2>Previous Records</h2>
+        <table class="dark-table">
+            <thead>
+            <tr>
+                <th>Draw Date</th>
+                <th>Number</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($oldLotteries as $oldlottery)
+                <tr>
+                    <td>{{ $oldlottery->created_at->format('M d, Y') }}</td>
+                    <td >
+                        @foreach(str_split($oldlottery->number) as $digit)
+                            <span class="number-ball2">{{ $digit }}</span>
+                        @endforeach
+                    </td>
+                </tr>
+                <style>
+                    .number-ball2 {
+                        display: inline-block;
+                        width: 32px;
+                        height: 32px;
+                        line-height: 32px;
+                        margin: 3px;
+                        border-radius: 50%;
+                        background: #e11d48; /* red ball */
+                        color: #fff;
+                        font-weight: bold;
+                        text-align: center;
+                        font-size: 14px;
+                    }
+                </style>
+            @endforeach
+            </tbody>
+        </table>
+
+        <style>
+            .dark-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+                font-size: 15px;
+                color: #fff; /* white text for dark bg */
+                background-color: #1e1f35; /* same jaisa aapke section ka bg hai */
+                border: 1px solid #333;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .dark-table th,
+            .dark-table td {
+                border: 1px solid #333; /* visible borders */
+                padding: 12px 16px;
+                text-align: center;
+            }
+
+            .dark-table thead {
+                background-color: #2c2f48; /* thoda alag shade for header */
+                font-weight: bold;
+            }
+        </style>
+
+    </section>
+
+</div>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2023 Lotto Winner. All rights reserved. Play responsibly.</p>
+    </div>
+</footer>
+
+<script>
+    // Countdown Timer
+    function updateCountdown() {
+        function updateCountdown() {
+            const now = new Date();
+
+            // Aaj ka date le lo
+            const today = new Date();
+            today.setHours(23, 30, 0, 0); // 11:30 PM
+
+            // Agar current time 11:30 PM ke baad ho gaya ho, agle din ka countdown shuru karo
+            if (now > today) {
+                today.setDate(today.getDate() + 1);
+            }
+
+            const timeDiff = today - now;
+
+            const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+// Update every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    }
+
+    // Initial call
+    updateCountdown();
+
+    // Update every second
+    setInterval(updateCountdown, 1000);
+
+    // In a real Laravel app, we would fetch data from the backend
+    // This is a simulation of fetching lottery data
+    function fetchLotteryResults() {
+        // Simulate API call to backend
+        setTimeout(() => {
+            // In a real app, this would come from the server
+            const today = new Date().toDateString();
+
+            // This simulates checking if we have results for today
+            const hasTodaysResults = Math.random() > 0.5;
+
+            if (hasTodaysResults) {
+                // Display today's results
+                document.querySelector('.draw-date').textContent = `Draw Date: ${today}`;
+            } else {
+                // Get the latest results from the database
+                document.querySelector('.draw-date').textContent = 'Latest Draw: May 14, 2023';
+            }
+        }, 1000);
+    }
+
+    // Fetch results when page loads
+    document.addEventListener('DOMContentLoaded', fetchLotteryResults);
+</script>
+</body>
+</html>

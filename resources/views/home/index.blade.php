@@ -389,10 +389,13 @@
 
 <footer>
     <div class="container">
-        <p>&copy; 2023 Lotto Winner. All rights reserved. Play responsibly.</p>
+        <p>&copy; <span id="year"></span> Paradise Lottery. All rights reserved. Play responsibly.</p>
     </div>
 </footer>
 
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 <script>
     // Countdown Timer
     function updateCountdown() {

@@ -10,13 +10,17 @@ class HomeController extends Controller
 {
     public function home(){
         $today = Carbon::today()->toDateString();
-        $todayLottery = Lottery::whereDate('created_at', $today)->first();
-        if (!$todayLottery) {
-            $todayLottery = new \stdClass();
-            $todayLottery->number = '0000';
-        }
         $latestLotteries = Lottery::whereDate('created_at', '<', $today)->orderBy('created_at', 'desc')->take(3)->get();
         $oldLotteries = Lottery::orderBy('created_at', 'desc')->skip(3)->take(PHP_INT_MAX)->get();
-        return view('home.index',['latestLottries'=>$latestLotteries,'oldLotteries'=>$oldLotteries , 'todayLottery'=>$todayLottery]);
+        return view('home.index',['latestLottries'=>$latestLotteries,'oldLotteries'=>$oldLotteries ]);
+    }
+    public function todayLottery(Request $request)
+    {
+        $lottery = Lottery::whereDate('created_at', Carbon::today())
+            ->orderBy('created_at','desc')
+            ->first();
+        return response()->json([
+            'number' => $lottery->number ?? '0000'
+        ]);
     }
 }

@@ -23,16 +23,7 @@
                 </div>
             </div>
         </section>
-        <section class="timer-section-hide">
-            @if($todayLottery)
-                <h2>Today's Result</h2>
-                <div class="numbers-display">
-                    @foreach(str_split($todayLottery->number) as $digit)
-                        <div class="number-ball">{{ $digit }}</div>
-                    @endforeach
-                </div>
-            @endif
-        </section>
+        <div id="result-container"></div>
 
         <section class="results-section">
             <h2>Latest Winning Numbers</h2>

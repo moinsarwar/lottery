@@ -18,3 +18,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/lottery/delete/{id}', [LotteryController::class, 'delete'])->name('deleteLottery');
 });
 
+Route::post('/today-lottery', [HomeController::class,'todayLottery'])->middleware('web');

@@ -16,7 +16,7 @@ class HomeController extends Controller
             $todayLottery->number = '0000';
         }
         $latestLotteries = Lottery::whereDate('created_at', '<', $today)->orderBy('created_at', 'desc')->take(3)->get();
-        $oldLotteries = Lottery::orderBy('created_at', 'desc')->skip(3)->take(100)->get();
+        $oldLotteries = Lottery::orderBy('created_at', 'desc')->skip(3)->take(PHP_INT_MAX)->get();
         return view('home.index',['latestLottries'=>$latestLotteries,'oldLotteries'=>$oldLotteries , 'todayLottery'=>$todayLottery]);
     }
 }

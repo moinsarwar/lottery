@@ -44,7 +44,7 @@
         </section>
         <section class="results-section">
             <h2>Previous Records</h2>
-            <table  id="myTable" class="dark-table">
+            <table id="myTable" class="dark-table">
                 <thead>
                 <tr>
                     <th>Draw Date</th>
@@ -74,57 +74,60 @@
             <p>&copy; <span id="year"></span> Paradise Lottery. All rights reserved. Play responsibly.</p>
         </div>
     </footer>
-    @section('script')
-        <script>
-            $(document).ready(function () {
-                var table = $('#myTable').DataTable({
-                    paging: true,
-                    searching: false,
-                    info: false,
-                    ordering: false,
-                    lengthChange: false,
-                    pageLength: 5,
-                    dom: 't'
-                });
-                function updatePagination(table) {
-                    var info = table.page.info();
-                    var currentPage = info.page;
-                    var totalPages = info.pages;
-                    var html = '';
-                    if (currentPage > 0) {
-                        html += `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`;
-                    }
-                    if (currentPage > 2) {
-                        html += `<button class="page-btn" data-page="0">1</button>`;
-                        if (currentPage > 3) {
-                            html += `<span class="dots">...</span>`;
-                        }
-                    }
-                    var start = Math.max(0, currentPage - 1);
-                    var end = Math.min(totalPages - 1, currentPage + 1);
-                    for (var i = start; i <= end; i++) {
-                        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i + 1}</button>`;
-                    }
-                    if (currentPage < totalPages - 3) {
-                        html += `<span class="dots">...</span>`;
-                        html += `<button class="page-btn" data-page="${totalPages - 1}">${totalPages}</button>`;
-                    }
-                    if (currentPage < totalPages - 1) {
-                        html += `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`;
-                    }
-                    $('#customPagination').html(html);
-                    var showing = (currentPage + 1) * info.length;
-                    if (showing > info.recordsTotal) showing = info.recordsTotal;
-                    $('#resultCount').text(`Showing ${showing} of ${info.recordsTotal} results`);
-                }
-                updatePagination(table);
-                $('#customPagination').on('click', '.page-btn', function () {
-                    var page = $(this).data('page');
-                    table.page(page).draw('page');
-                    updatePagination(table);
-                });
-            });
-        </script>
+@endsection
 
-    @endsection
+@section('script')
+    <script>
+        $(document).ready(function () {
+            var table = $('#myTable').DataTable({
+                paging: true,
+                searching: false,
+                info: false,
+                ordering: false,
+                lengthChange: false,
+                pageLength: 5,
+                dom: 't'
+            });
+
+            function updatePagination(table) {
+                var info = table.page.info();
+                var currentPage = info.page;
+                var totalPages = info.pages;
+                var html = '';
+                if (currentPage > 0) {
+                    html += `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`;
+                }
+                if (currentPage > 2) {
+                    html += `<button class="page-btn" data-page="0">1</button>`;
+                    if (currentPage > 3) {
+                        html += `<span class="dots">...</span>`;
+                    }
+                }
+                var start = Math.max(0, currentPage - 1);
+                var end = Math.min(totalPages - 1, currentPage + 1);
+                for (var i = start; i <= end; i++) {
+                    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i + 1}</button>`;
+                }
+                if (currentPage < totalPages - 3) {
+                    html += `<span class="dots">...</span>`;
+                    html += `<button class="page-btn" data-page="${totalPages - 1}">${totalPages}</button>`;
+                }
+                if (currentPage < totalPages - 1) {
+                    html += `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`;
+                }
+                $('#customPagination').html(html);
+                var showing = (currentPage + 1) * info.length;
+                if (showing > info.recordsTotal) showing = info.recordsTotal;
+                $('#resultCount').text(`Showing ${showing} of ${info.recordsTotal} results`);
+            }
+
+            updatePagination(table);
+            $('#customPagination').on('click', '.page-btn', function () {
+                var page = $(this).data('page');
+                table.page(page).draw('page');
+                updatePagination(table);
+            });
+        });
+    </script>
+
 @endsection

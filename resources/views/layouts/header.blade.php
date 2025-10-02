@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-custom shadow">
     <div class="container">
-        <a class="navbar-brand" href="/lottery">🎲 Lottery App</a>
+        <a class="navbar-brand" href="{{route('dashboard')}}">🎲 Paradise Lottery</a>
         <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>

@@ -4,53 +4,8 @@
 
 @section('content')
     <div class="container">
-        @if(session('success'))
-            <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055">
-                <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert"
-                     aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            {{ session('success') }}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                                data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-        @endif
-        {{-- ✅ Validation errors --}}
-        @if ($errors->any())
-            <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055">
-                @foreach ($errors->all() as $error)
-                    <div class="toast align-items-center text-bg-danger border-0 mb-2" role="alert"
-                         aria-live="assertive" aria-atomic="true">
-                        <div class="d-flex">
-                            <div class="toast-body">
-                                {{ $error }}
-                            </div>
-                            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                                    data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+        @include('partials.alerts')
 
-        {{-- ✅ Bootstrap Toast for error --}}
-        @if(session('error'))
-            <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055">
-                <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert"
-                     aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            {{ session('error') }}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                                data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-        @endif
         <div class="card shadow border-0 rounded-4">
             <div
                 class="card-header bg-gradient bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
@@ -62,7 +17,7 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="mytable" class="table table-hover table-bordered align-middle mb-0">
+                    <table id="myTable" class="table table-hover table-bordered align-middle mb-0">
                         <thead class="table-primary text-dark">
                         <tr>
                             <th scope="col">#</th>
@@ -94,6 +49,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <div id="customPagination" class="custom-pagination"></div>
                 </div>
             </div>
             <div class="card-footer text-muted small text-end">
@@ -161,36 +117,57 @@
 @endsection
 @section('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // success toast
-            var successToastEl = document.getElementById('successToast');
-            if (successToastEl) {
-                var successToast = new bootstrap.Toast(successToastEl, {delay: 5000});
-                successToast.show();
+        $(document).ready(function () {
+            var table = $('#myTable').DataTable({
+                paging: true,
+                searching: false,
+                info: false,
+                ordering: true,
+                lengthChange: false,
+                pageLength: 12,
+                dom: 't',
+                order: [[0, 'desc']]
+            });
+
+            function updatePagination(table) {
+                var info = table.page.info();
+                var currentPage = info.page;
+                var totalPages = info.pages;
+                var html = '';
+                if (currentPage > 0) {
+                    html += `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`;
+                }
+                if (currentPage > 2) {
+                    html += `<button class="page-btn" data-page="0">1</button>`;
+                    if (currentPage > 3) {
+                        html += `<span class="dots">...</span>`;
+                    }
+                }
+                var start = Math.max(0, currentPage - 1);
+                var end = Math.min(totalPages - 1, currentPage + 1);
+                for (var i = start; i <= end; i++) {
+                    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i + 1}</button>`;
+                }
+                if (currentPage < totalPages - 3) {
+                    html += `<span class="dots">...</span>`;
+                    html += `<button class="page-btn" data-page="${totalPages - 1}">${totalPages}</button>`;
+                }
+                if (currentPage < totalPages - 1) {
+                    html += `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`;
+                }
+                $('#customPagination').html(html);
+                var showing = (currentPage + 1) * info.length;
+                if (showing > info.recordsTotal) showing = info.recordsTotal;
+                $('#resultCount').text(`Showing ${showing} of ${info.recordsTotal} results`);
             }
 
-            // error toast
-            var errorToastEl = document.getElementById('errorToast');
-            if (errorToastEl) {
-                var errorToast = new bootstrap.Toast(errorToastEl, {delay: 5000});
-                errorToast.show();
-            }
-        });
-        document.querySelectorAll('.toast.text-bg-danger').forEach(toastEl => {
-            let toast = new bootstrap.Toast(toastEl, {delay: 5000});
-            toast.show();
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".viewBtn").forEach(btn => {
-                btn.addEventListener("click", function () {
-                    let id = this.dataset.id;
-                    let number = this.dataset.number;
-                    document.getElementById("lotteryId").value = id;
-                    document.getElementById("editLotteryNumber").value = number;
-                });
+            updatePagination(table);
+            $('#customPagination').on('click', '.page-btn', function () {
+                var page = $(this).data('page');
+                table.page(page).draw('page');
+                updatePagination(table);
             });
         });
     </script>
+
 @endsection

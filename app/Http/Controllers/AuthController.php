@@ -33,7 +33,7 @@ class AuthController extends Controller
         }
         Auth::login($user);
         $request->session()->regenerate();
-        return redirect('/lottery')->with('success', 'Logged in successfully!');
+        return redirect(route('dashboard'))->with('success', 'Logged in successfully!');
     }
 
     public function showRegister()
@@ -57,7 +57,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/lottery')->with('success', 'Account created');
+        return redirect(route('dashboard'))->with('success', 'Account created');
     }
 
     public function logout(Request $request)
